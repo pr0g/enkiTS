@@ -627,7 +627,7 @@ void TaskScheduler::TaskComplete( ICompletable* pTask_, bool bWakeThreads_, uint
     // It must be impossible for a thread to enter the sleeping wait prior to the load of m_WaitingForTaskCount
     // in this function, so we introduce an gc_TaskAlmostCompleteCount to prevent this.
     ENKI_ASSERT( gc_TaskAlmostCompleteCount == pTask_->m_RunningCount.load( std::memory_order_acquire ) );
-    bool bCallWakeThreads = bWakeThreads_ && pTask_->m_WaitingForTaskCount.load( std::memory_order_acquire );
+    bool bCallWakeThreads = bWakeThreads_ && pTask_->m_WaitingForTaskCount.load( std::memory_order_seq_cst );
 
     Dependency* pDependent = pTask_->m_pDependents;
 
